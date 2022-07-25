@@ -11,9 +11,9 @@ import (
 )
 
 func init() {
-	out, err := exec.Command("ls", "-l").Output()
-	if err != nil {
-		log.Fatal(err)
+	out, lsErr := exec.Command("ls", "-l").Output()
+	if lsErr != nil {
+		log.Fatal(lsErr)
 	}
 	log.Println(string(out))
 
