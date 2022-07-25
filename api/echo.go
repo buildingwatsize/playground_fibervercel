@@ -11,14 +11,18 @@ import (
 )
 
 func init() {
-	out, lsErr := exec.Command("ls", "-la", "../").Output()
+	out, _ := exec.Command("ls", "-la").Output()
+	log.Println(string(out))
+	out2, lsErr := exec.Command("ls", "-la", "../").Output()
 	if lsErr != nil {
 		log.Fatal(lsErr)
 	}
-	log.Println(string(out))
+	log.Println(string(out2))
 
-	viper.SetConfigFile(".env")
-	viper.AddConfigPath("../")
+	viper.AddConfigPath("./_env")
+	viper.SetConfigName("env")
+	viper.SetConfigType("json")
+
 	viper.AutomaticEnv()
 	err := viper.ReadInConfig()
 	if err != nil {
