@@ -3,6 +3,7 @@ package handler
 import (
 	"log"
 	"net/http"
+	"os/exec"
 
 	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
@@ -10,6 +11,12 @@ import (
 )
 
 func init() {
+	out, err := exec.Command("ls", "-l").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(string(out))
+
 	viper.SetConfigFile(".env")
 	viper.AddConfigPath("/api")
 	viper.AutomaticEnv()
