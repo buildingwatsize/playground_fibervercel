@@ -11,6 +11,7 @@ import (
 
 func init() {
 	viper.SetConfigFile(".env")
+	viper.AddConfigPath("/api")
 	viper.AutomaticEnv()
 	err := viper.ReadInConfig()
 	if err != nil {
