@@ -77,7 +77,7 @@ func SpotifyClientAPI(c *fiber.Ctx) error {
 		})
 	}
 
-	itemsList := responseData["items"].([]ItemsModel)
+	itemsList := ConvertResponseToStruct(responseData["items"].([]interface{}))
 	totalTracks := responseData["total"].(int64)
 	if !isRunning {
 		currentTotalTracks = totalTracks
@@ -92,6 +92,13 @@ func SpotifyClientAPI(c *fiber.Ctx) error {
 	return c.Status(response.StatusCode).JSON(fiber.Map{
 		"response": responseData,
 	})
+}
+
+func ConvertResponseToStruct(items []interface{}) []ItemsModel {
+	var itemsList []ItemsModel
+	dataByte, _ := json.Marshal(items)
+	_ = json.Unmarshal(dataByte, &itemsList)
+	return itemsList
 }
 
 type ItemsModel struct {
