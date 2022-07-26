@@ -76,17 +76,20 @@ func SpotifyClientAPI(c *fiber.Ctx) error {
 			"error": errMarshal.Error(),
 		})
 	}
+	log.Printf("%+v\n", responseData)
 
-	itemsList := ConvertResponseToStruct(responseData["items"].([]interface{}))
-	totalTracks := responseData["total"].(int64)
-	if !isRunning {
-		currentTotalTracks = totalTracks
-		isRunning = true
-	} else if currentTotalTracks < totalTracks {
-		addingList := itemsList[0 : totalTracks-currentTotalTracks]
-		log.Printf("Adding List: %+v\n", addingList)
-	} else {
-		log.Println("just skipping")
+	if responseData["items"] != nil {
+		itemsList := ConvertResponseToStruct(responseData["items"].([]interface{}))
+		totalTracks := responseData["total"].(int64)
+		if !isRunning {
+			currentTotalTracks = totalTracks
+			isRunning = true
+		} else if currentTotalTracks < totalTracks {
+			addingList := itemsList[0 : totalTracks-currentTotalTracks]
+			log.Printf("Adding List: %+v\n", addingList)
+		} else {
+			log.Println("just skipping")
+		}
 	}
 
 	return c.Status(response.StatusCode).JSON(fiber.Map{
