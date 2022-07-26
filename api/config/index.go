@@ -8,6 +8,7 @@ import (
 )
 
 func init() {
+	log.Println("Init: setting up the configuration")
 	viper.AddConfigPath("./_env")
 	viper.SetConfigName("env")
 	viper.SetConfigType("json")
@@ -17,6 +18,7 @@ func init() {
 	if err != nil {
 		log.Panicf("Fatal error config file: %s \n", err)
 	}
+	log.Println("Finished: the configuration is already use")
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
