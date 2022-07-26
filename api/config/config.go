@@ -1,4 +1,4 @@
-package handler
+package config
 
 import (
 	"log"
@@ -18,12 +18,12 @@ func init() {
 	}
 }
 
-type configuration struct {
-	firstTimeMessage string
+type Configuration struct {
+	FirstTimeMessage string
 }
 
-func newConfiguration() configuration {
-	return configuration{
-		firstTimeMessage: viper.GetString("FIRST_TIME_MESSAGE"),
+func NewConfiguration() Configuration {
+	return Configuration{
+		FirstTimeMessage: viper.GetString("FIRST_TIME_MESSAGE"),
 	}
 }

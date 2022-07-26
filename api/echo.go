@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"playground/config"
+
 	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
 )
@@ -17,7 +19,7 @@ func EchoAPI(c *fiber.Ctx) error {
 
 	log.Println("Reached: Echo API")
 
-	config := newConfiguration()
-	log.Printf("%+v\n", config)
-	return c.JSON(config)
+	conf := config.NewConfiguration()
+	log.Printf("%+v\n", conf)
+	return c.JSON(conf)
 }
