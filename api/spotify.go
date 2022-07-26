@@ -19,6 +19,11 @@ const (
 	TIMEOUT string = "1m"
 )
 
+var (
+	isRunning          bool  = false
+	currentTotalTracks int64 = 0
+)
+
 func SpotifyHandler(w http.ResponseWriter, r *http.Request) {
 	adaptor.FiberHandlerFunc(SpotifyClientAPI)(w, r)
 }
@@ -33,7 +38,7 @@ func SpotifyClientAPI(c *fiber.Ctx) error {
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 
 	method := "GET"
-	url := "https://api.spotify.com/v1/me/tracks?market=TH"
+	url := "https://api.spotify.com/v1/me/tracks?offset=0&limit=10&market=TH"
 	headers := []struct {
 		Key   string
 		Value string
@@ -60,7 +65,6 @@ func SpotifyClientAPI(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	log.Printf("%+v\n", response)
 
 	responseBody, _ := ioutil.ReadAll(response.Body)
 	defer response.Body.Close()
@@ -72,7 +76,26 @@ func SpotifyClientAPI(c *fiber.Ctx) error {
 			"error": errMarshal.Error(),
 		})
 	}
+
+	itemsList := responseData["items"].([]ItemsModel)
+	totalTracks := responseData["total"].(int64)
+	if !isRunning {
+		currentTotalTracks = totalTracks
+		isRunning = true
+	} else if currentTotalTracks < totalTracks {
+		addingList := itemsList[0 : totalTracks-currentTotalTracks]
+		log.Printf("Adding List: %+v\n", addingList)
+	} else {
+		log.Println("just skipping")
+	}
+
 	return c.Status(response.StatusCode).JSON(fiber.Map{
 		"response": responseData,
 	})
+}
+
+type ItemsModel struct {
+	Track struct {
+		URI string `json:"uri"`
+	} `json:"track"`
 }
