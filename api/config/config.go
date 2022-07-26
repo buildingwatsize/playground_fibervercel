@@ -20,7 +20,7 @@ func init() {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte(nil))
+	http.Redirect(w, r, "/api", http.StatusSeeOther)
 }
 
 type Configuration struct {
