@@ -1,4 +1,4 @@
-package spotify
+package handler
 
 import (
 	"crypto/tls"
