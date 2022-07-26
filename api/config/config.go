@@ -25,10 +25,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 type Configuration struct {
 	FirstTimeMessage string
+	AnotherVariable  string
 }
 
 func NewConfiguration() Configuration {
 	return Configuration{
 		FirstTimeMessage: viper.GetString("FIRST_TIME_MESSAGE"),
+		AnotherVariable:  viper.GetString("ANOTHER_VARIABLE"),
 	}
 }
