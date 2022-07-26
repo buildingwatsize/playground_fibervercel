@@ -16,9 +16,10 @@ func init() {
 	viper.AutomaticEnv()
 	err := viper.ReadInConfig()
 	if err != nil {
-		log.Panicf("Fatal error config file: %s \n", err)
+		log.Printf("Error: on initializing config file: %s \n", err)
+	} else {
+		log.Println("Finished: the configuration is already use")
 	}
-	log.Println("Finished: the configuration is already use")
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
