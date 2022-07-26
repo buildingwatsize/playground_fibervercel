@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/spf13/viper"
 )
@@ -16,6 +17,10 @@ func init() {
 	if err != nil {
 		log.Panicf("Fatal error config file: %s \n", err)
 	}
+}
+
+func Handler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte(nil))
 }
 
 type Configuration struct {
